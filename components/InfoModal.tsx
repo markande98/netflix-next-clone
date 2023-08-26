@@ -21,10 +21,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
   }, [visible]);
 
   const handleClose = useCallback(() => {
-    setIsVisible(false);
-
     setTimeout(() => {
       onClose();
+      setIsVisible(false);
     }, 300);
   }, [onClose]);
 
