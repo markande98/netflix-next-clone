@@ -2,26 +2,38 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 
 import useBillboard from "@/hooks/useBillboard";
 import PlayButton from "./PlayButton";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import useInfoModal from "@/hooks/useInfoModal";
 
+import { GoUnmute, GoMute } from "react-icons/go";
+
 const Billboard = () => {
+  const [isMute, setIsMute] = useState(true);
   const { data } = useBillboard();
   const { openModal } = useInfoModal();
+
+  const toggleMute = useCallback(() => {
+    setIsMute((curMute) => !curMute);
+  }, []);
+
+  const Icon = isMute ? GoMute : GoUnmute;
 
   const handleOpenModal = useCallback(() => {
     openModal(data?.id);
   }, [openModal, data?.id]);
   return (
-    <div className="relative h-[40vw]">
+    <div className="relative h-[45vw]">
       <video
-        className="w-full h-[40vw] object-cover brightness-[60%]"
+        className="w-full h-[45vw] object-cover brightness-[60%]"
         src={data?.videoUrl}
         poster={data?.thumbnailUrl}
         autoPlay
-        muted
+        muted={isMute}
         loop
       />
+      <div onClick={toggleMute} className="absolute right-[5%] bottom-[10%] cursor-pointer">
+        <Icon className="text-white" size={30} />
+      </div>
       <div className="absolute top-[30%] md:top-[40%] ml-4 md:ml-16">
         <p className="text-white text-1xl md:text-5xl h-full w-[50%] lg:text-6xl font-bold drop-shadow-xl">
           {data?.title}
@@ -67,6 +79,7 @@ const Billboard = () => {
             More Info
           </button>
         </div>
+        d
       </div>
     </div>
   );
